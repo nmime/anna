@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Для тебя, Анна</title>
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+
+  <!-- Stars Canvas Background -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- Floating Hearts -->
+  <div id="hearts-bg"></div>
+
+  <!-- Sparkle cursor -->
+  <div id="sparkle-container"></div>
+
+  <!-- MAIN LANDING -->
+  <div class="landing-container">
+    <h1 class="landing-title">Для тебя, Анна</h1>
+    <p class="landing-subtitle">Два особенных дня. Два секрета. Одна любовь.</p>
+
+    <div class="cards-wrapper">
+
+      <!-- 8 MARCH CARD -->
+      <div class="date-card" id="card-march8" data-date="2026-03-08" data-password="most beatiful girl">
+        <div class="card-glow"></div>
+        <div class="card-inner">
+          <div class="card-icon">💐</div>
+          <h2 class="card-date">8 Марта</h2>
+          <p class="card-desc">Международный женский день</p>
+          <div class="card-lock-status" id="lock-status-8">
+            <span class="lock-icon">🔒</span>
+            <span class="lock-text">Откроется 8 марта</span>
+          </div>
+          <div class="card-password-form" id="form-march8" style="display:none;">
+            <p class="password-hint">Введи секретную фразу:</p>
+            <input type="text" class="password-input" id="pass-march8" placeholder="..." autocomplete="off">
+            <button class="password-btn" onclick="checkPassword('march8')">Открыть</button>
+            <p class="password-error" id="error-march8"></p>
+          </div>
+        </div>
+        <div class="card-shimmer"></div>
+      </div>
+
+      <!-- 11 MARCH CARD -->
+      <div class="date-card" id="card-march11" data-date="2026-03-11" data-password="only my girl">
+        <div class="card-glow"></div>
+        <div class="card-inner">
+          <div class="card-icon">🎂</div>
+          <h2 class="card-date">11 Марта</h2>
+          <p class="card-desc">День рождения</p>
+          <div class="card-lock-status" id="lock-status-11">
+            <span class="lock-icon">🔒</span>
+            <span class="lock-text">Откроется 11 марта</span>
+          </div>
+          <div class="card-password-form" id="form-march11" style="display:none;">
+            <p class="password-hint">Введи секретную фразу:</p>
+            <input type="text" class="password-input" id="pass-march11" placeholder="..." autocomplete="off">
+            <button class="password-btn" onclick="checkPassword('march11')">Открыть</button>
+            <p class="password-error" id="error-march11"></p>
+          </div>
+        </div>
+        <div class="card-shimmer"></div>
+      </div>
+
+    </div>
+
+    <p class="landing-footer">Сделано с ❤️ только для тебя</p>
+  </div>
+
+  <script src="landing.js"></script>
+</body>
+</html>
