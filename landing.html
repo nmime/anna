@@ -10,10 +10,22 @@
 
   <!-- Preloader -->
   <div id="preloader">
+    <div class="preloader-outer-ring"></div>
     <div class="preloader-ring">
       <div class="preloader-heart">💝</div>
     </div>
-    <p class="preloader-text">Открываю что-то особенное...</p>
+    <p class="preloader-text" id="preloader-text"></p>
+    <div class="preloader-progress"><div class="preloader-bar"></div></div>
+  </div>
+
+  <!-- Noise texture overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- Aurora effect -->
+  <div class="aurora">
+    <div class="aurora-band aurora-1"></div>
+    <div class="aurora-band aurora-2"></div>
+    <div class="aurora-band aurora-3"></div>
   </div>
 
   <!-- Animated mesh gradient background -->
@@ -24,23 +36,33 @@
     <div class="mesh-orb mesh-orb-4"></div>
   </div>
 
-  <!-- Stars Canvas -->
+  <!-- Stars Canvas (includes shooting stars) -->
   <canvas id="stars-canvas"></canvas>
 
   <!-- Floating particles -->
   <canvas id="particles-canvas"></canvas>
 
+  <!-- Floating emojis -->
+  <div id="floating-emojis"></div>
+
   <!-- MAIN LANDING -->
-  <div class="landing-container">
+  <div class="landing-container" id="main-content">
 
     <!-- Top decorative line -->
     <div class="deco-line"></div>
 
     <div class="landing-header">
       <p class="landing-tag">СПЕЦИАЛЬНО ДЛЯ ТЕБЯ</p>
-      <h1 class="landing-title">Анна</h1>
+      <h1 class="landing-title" id="main-title">Анна</h1>
       <div class="title-underline"></div>
-      <p class="landing-subtitle">Два особенных дня. Два секрета. Одна любовь.</p>
+      <p class="landing-subtitle" id="typed-subtitle"></p>
+      <p class="landing-subtitle-cursor" id="cursor">|</p>
+    </div>
+
+    <!-- Love quote rotator -->
+    <div class="love-quote" id="love-quote">
+      <span class="quote-icon">💭</span>
+      <p class="quote-text" id="quote-text"></p>
     </div>
 
     <div class="cards-wrapper">
@@ -49,10 +71,12 @@
       <div class="date-card" id="card-march8" data-date="2026-03-08" data-password="most beatiful girl">
         <div class="card-glass"></div>
         <div class="card-border-glow"></div>
+        <div class="card-spotlight"></div>
         <div class="card-inner">
           <div class="card-badge">08.03</div>
           <div class="card-icon-wrap">
             <div class="card-icon-ring"></div>
+            <div class="card-icon-ring card-icon-ring-2"></div>
             <div class="card-icon">💐</div>
           </div>
           <h2 class="card-date">8 Марта</h2>
@@ -68,7 +92,7 @@
               <input type="text" class="password-input" id="pass-march8" placeholder="шепни мне..." autocomplete="off">
               <div class="input-glow"></div>
             </div>
-            <button class="password-btn" onclick="checkPassword('march8')">
+            <button class="password-btn magnetic-btn" onclick="checkPassword('march8')">
               <span>Открыть</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
@@ -82,10 +106,12 @@
       <div class="date-card card-birthday" id="card-march11" data-date="2026-03-11" data-password="only my girl">
         <div class="card-glass"></div>
         <div class="card-border-glow"></div>
+        <div class="card-spotlight"></div>
         <div class="card-inner">
           <div class="card-badge">11.03</div>
           <div class="card-icon-wrap">
             <div class="card-icon-ring"></div>
+            <div class="card-icon-ring card-icon-ring-2"></div>
             <div class="card-icon">🎂</div>
           </div>
           <h2 class="card-date">11 Марта</h2>
@@ -101,7 +127,7 @@
               <input type="text" class="password-input" id="pass-march11" placeholder="шепни мне..." autocomplete="off">
               <div class="input-glow"></div>
             </div>
-            <button class="password-btn" onclick="checkPassword('march11')">
+            <button class="password-btn magnetic-btn" onclick="checkPassword('march11')">
               <span>Открыть</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
@@ -117,9 +143,14 @@
       <div class="scroll-hint">
         <div class="scroll-dot"></div>
       </div>
-      <p class="landing-footer">Сделано с любовью, только для тебя</p>
+      <p class="landing-footer">
+        <span class="footer-heart">❤️</span> Сделано с любовью, только для тебя
+      </p>
     </div>
   </div>
+
+  <!-- Cursor trail canvas -->
+  <canvas id="cursor-trail"></canvas>
 
   <script src="landing.js"></script>
 </body>
