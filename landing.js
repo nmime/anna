@@ -99,7 +99,7 @@ function initStars() {
       size: Math.random() * 1.8 + 0.2,
       opacity: Math.random(),
       twinkleSpeed: (Math.random() - 0.5) * 0.012,
-      hue: Math.random() > 0.75 ? (Math.random() * 50 + 320) : 0
+      hue: Math.random() > 0.5 ? (Math.random() * 40 + 320) : (Math.random() * 30 + 270)
     });
   }
 }
@@ -130,18 +130,14 @@ function animateStars() {
     if (star.opacity > 1 || star.opacity < 0.05) star.twinkleSpeed *= -1;
     starsCtx.beginPath();
     starsCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-    if (star.hue) {
-      starsCtx.fillStyle = `hsla(${star.hue}, 80%, 85%, ${star.opacity * 0.6})`;
-    } else {
-      starsCtx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.7})`;
-    }
+    starsCtx.fillStyle = `hsla(${star.hue}, 70%, 65%, ${star.opacity * 0.35})`;
     starsCtx.fill();
 
     // Tiny glow for bigger stars
     if (star.size > 1.2) {
       starsCtx.beginPath();
       starsCtx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
-      starsCtx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.03})`;
+      starsCtx.fillStyle = `hsla(${star.hue}, 70%, 65%, ${star.opacity * 0.06})`;
       starsCtx.fill();
     }
   });
@@ -160,18 +156,18 @@ function animateStars() {
       const width = (idx / ss.trail.length) * 2;
       starsCtx.beginPath();
       starsCtx.arc(point.x, point.y, width, 0, Math.PI * 2);
-      starsCtx.fillStyle = `rgba(255, 220, 240, ${alpha})`;
+      starsCtx.fillStyle = `rgba(232, 67, 147, ${alpha * 0.5})`;
       starsCtx.fill();
     });
 
     // Head glow
     starsCtx.beginPath();
     starsCtx.arc(ss.x, ss.y, 3, 0, Math.PI * 2);
-    starsCtx.fillStyle = `rgba(255, 255, 255, ${ss.opacity})`;
+    starsCtx.fillStyle = `rgba(232, 67, 147, ${ss.opacity * 0.6})`;
     starsCtx.fill();
     starsCtx.beginPath();
     starsCtx.arc(ss.x, ss.y, 8, 0, Math.PI * 2);
-    starsCtx.fillStyle = `rgba(255, 107, 157, ${ss.opacity * 0.15})`;
+    starsCtx.fillStyle = `rgba(232, 67, 147, ${ss.opacity * 0.12})`;
     starsCtx.fill();
 
     return ss.opacity > 0;
@@ -204,7 +200,7 @@ function initParticles() {
       speedX: (Math.random() - 0.5) * 0.4,
       speedY: (Math.random() - 0.5) * 0.4,
       opacity: Math.random() * 0.25 + 0.05,
-      color: ['255,107,157', '247,215,148', '108,92,231', '253,121,168', '223,230,233'][Math.floor(Math.random() * 5)],
+      color: ['232,67,147', '244,114,182', '192,132,252', '236,72,153', '251,191,213'][Math.floor(Math.random() * 5)],
       pulsePhase: Math.random() * Math.PI * 2,
       pulseSpeed: Math.random() * 0.02 + 0.01
     });
@@ -262,7 +258,7 @@ function animateParticles() {
         pCtx.beginPath();
         pCtx.moveTo(pParticles[i].x, pParticles[i].y);
         pCtx.lineTo(pParticles[j].x, pParticles[j].y);
-        pCtx.strokeStyle = `rgba(255, 107, 157, ${0.025 * (1 - dist / 120)})`;
+        pCtx.strokeStyle = `rgba(232, 67, 147, ${0.06 * (1 - dist / 120)})`;
         pCtx.lineWidth = 0.5;
         pCtx.stroke();
       }
@@ -353,11 +349,11 @@ if (!isMobile) {
       const last = { x: mouseX, y: mouseY };
       trailCtx.beginPath();
       trailCtx.arc(last.x, last.y, 5, 0, Math.PI * 2);
-      trailCtx.fillStyle = 'rgba(255, 107, 157, 0.6)';
+      trailCtx.fillStyle = 'rgba(232, 67, 147, 0.5)';
       trailCtx.fill();
       trailCtx.beginPath();
       trailCtx.arc(last.x, last.y, 2, 0, Math.PI * 2);
-      trailCtx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      trailCtx.fillStyle = 'rgba(232, 67, 147, 0.8)';
       trailCtx.fill();
     }
 
@@ -412,7 +408,7 @@ document.querySelectorAll('.magnetic-btn').forEach(btn => {
 const cards = {
   march8: {
     date: new Date('2026-03-08T00:00:00'),
-    password: 'most beatiful girl',
+    password: 'принцесса',
     page: 'march8.html'
   },
   march11: {
@@ -482,9 +478,9 @@ function checkPassword(cardKey) {
     // Success glow
     cardEl.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
     cardEl.style.transform = 'scale(1.08)';
-    cardEl.style.boxShadow = '0 0 150px rgba(255, 107, 157, 0.35)';
-    cardEl.querySelector('.card-border-glow').style.borderColor = 'rgba(247, 215, 148, 0.5)';
-    cardEl.querySelector('.card-border-glow').style.boxShadow = '0 0 60px rgba(255, 107, 157, 0.2), inset 0 0 60px rgba(247, 215, 148, 0.1)';
+    cardEl.style.boxShadow = '0 0 150px rgba(232, 67, 147, 0.25)';
+    cardEl.querySelector('.card-border-glow').style.borderColor = 'rgba(232, 67, 147, 0.4)';
+    cardEl.querySelector('.card-border-glow').style.boxShadow = '0 0 60px rgba(232, 67, 147, 0.15), inset 0 0 60px rgba(244, 114, 182, 0.08)';
 
     // Particle burst
     for (let i = 0; i < 40; i++) {
@@ -500,7 +496,7 @@ function checkPassword(cardKey) {
           z-index: 9999;
           transition: all ${0.6 + Math.random() * 1.5}s cubic-bezier(0.16, 1, 0.3, 1);
           opacity: 1;
-          filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.3));
+          filter: drop-shadow(0 0 8px rgba(232, 67, 147, 0.2));
         `;
         heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
         document.body.appendChild(heart);
@@ -516,7 +512,7 @@ function checkPassword(cardKey) {
 
     // Screen flash
     const flash = document.createElement('div');
-    flash.style.cssText = 'position:fixed;inset:0;background:rgba(255,107,157,0.08);z-index:9997;pointer-events:none;transition:opacity 0.8s ease';
+    flash.style.cssText = 'position:fixed;inset:0;background:rgba(244,114,182,0.1);z-index:9997;pointer-events:none;transition:opacity 0.8s ease';
     document.body.appendChild(flash);
     setTimeout(() => { flash.style.opacity = '0'; setTimeout(() => flash.remove(), 800); }, 100);
 
@@ -531,8 +527,8 @@ function checkPassword(cardKey) {
     error.classList.remove('shake');
     void error.offsetWidth;
     error.classList.add('shake');
-    input.style.borderColor = 'rgba(253, 121, 168, 0.4)';
-    input.style.background = 'rgba(253, 121, 168, 0.04)';
+    input.style.borderColor = 'rgba(232, 67, 147, 0.4)';
+    input.style.background = 'rgba(232, 67, 147, 0.04)';
 
     // Shake the whole card
     const cardEl = document.getElementById('card-' + cardKey);
