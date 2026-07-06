@@ -9,7 +9,12 @@ import YearRing from './YearRing.astro';
 import MonthChapters from './MonthChapters.astro';
 import { anniversaryEvent, site } from '../registry.js';
 ---
-<BaseLayout title={anniversaryEvent.title} theme={anniversaryEvent.theme} preloader={anniversaryEvent.preloader}>
+<BaseLayout
+  title={anniversaryEvent.title}
+  theme={anniversaryEvent.theme}
+  preloader={anniversaryEvent.preloader}
+  lock={anniversaryEvent.password ? anniversaryEvent.id : null}
+>
   <SiteNav items={anniversaryEvent.nav} />
   <main id="content" class="event-page" data-event={anniversaryEvent.id}>
     <section class="anni-hero">

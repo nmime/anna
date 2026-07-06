@@ -1,15 +1,10 @@
 ---
-import { libraryEvent, site } from '../events/registry.js';
+import { site } from '../events/registry.js';
 
-// items = in-page section anchors (event pages pass their own); the chapters
-// menu is built from the registry, so new events appear automatically.
+// items = in-page section anchors (event pages pass their own). Cross-page
+// navigation goes only through the library landing, where the gates live.
 const { items = [], brand = site.name } = Astro.props;
 const anchors = items.filter((item) => item.href.startsWith('#'));
-const chapters = libraryEvent.cards.map((card) => ({
-  label: card.cardTitle,
-  href: card.href,
-  badge: card.badge
-}));
 ---
 <nav class="site-nav" aria-label="Основная навигация">
   <a class="site-nav__brand" href="/" aria-label="На главную">{brand}</a>
@@ -19,17 +14,6 @@ const chapters = libraryEvent.cards.map((card) => ({
         <a href={item.href}>{item.label}</a>
       ))}
     </div>
-    <details class="site-nav__menu" data-nav-menu>
-      <summary aria-label="Открыть список глав">Главы<span aria-hidden="true">▾</span></summary>
-      <div class="site-nav__panel">
-        <a href="/">Главная</a>
-        {chapters.map((chapter) => (
-          <a href={chapter.href}>
-            {chapter.label}
-            <small>{chapter.badge}</small>
-          </a>
-        ))}
-      </div>
-    </details>
+    <a class="site-nav__library" href="/">Библиотека</a>
   </div>
 </nav>

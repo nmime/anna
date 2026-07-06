@@ -35,7 +35,7 @@ class SitePreloader extends HTMLElement {
 class MemoryGate extends HTMLElement {
   connectedCallback() {
     this.href = this.dataset.href;
-    // Несколько допустимых вариантов пароля разделяются символом |
+    // data-password содержит sha256-хэши вариантов (через |), не сами слова.
     this.passwords = (this.dataset.password || '')
       .toLowerCase()
       .split('|')
@@ -103,12 +103,18 @@ class MemoryGate extends HTMLElement {
     }
   }
 
-  checkPassword() {
+  async checkPassword() {
     if (!this.input) return;
     const value = this.input.value.trim().toLowerCase();
+    const digest = await sha256Hex(value);
 
-    if (this.passwords.includes(value)) {
+    if (this.passwords.includes(digest)) {
       if (this.error) this.error.textContent = '';
+      try {
+        localStorage.setItem(`memoryGate:${this.dataset.id}`, 'open');
+      } catch {
+        // приватный режим — пусть страж на странице пропустит по referrer не выйдет, просто откроем
+      }
       this.classList.add('is-unlocking');
       navigateWithLoader(this.href);
       return;
@@ -117,6 +123,12 @@ class MemoryGate extends HTMLElement {
     if (this.error) this.error.textContent = 'Не то слово. Попробуй еще раз.';
     this.input.focus();
   }
+}
+
+async function sha256Hex(text) {
+  const bytes = new TextEncoder().encode(text);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 class LetterEnvelope extends HTMLElement {

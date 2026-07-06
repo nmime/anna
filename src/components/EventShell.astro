@@ -12,7 +12,7 @@ const {
   heroImageClass = 'page-hero__image--portrait'
 } = Astro.props;
 ---
-<BaseLayout title={event.title} theme={event.theme} preloader={event.preloader}>
+<BaseLayout title={event.title} theme={event.theme} preloader={event.preloader} lock={event.password ? event.id : null}>
   <SiteNav items={event.nav} />
   <main id="content" class="event-page" data-event={event.id}>
     <PageHero

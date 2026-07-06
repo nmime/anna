@@ -263,14 +263,9 @@ main,
   gap: clamp(12px, 2vw, 24px);
 }
 
-.site-nav__menu {
-  position: relative;
-}
-
-.site-nav__menu summary {
+.site-nav__library {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
   padding: 9px 16px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -278,77 +273,15 @@ main,
   color: var(--ink);
   font-size: 13px;
   font-weight: 700;
-  list-style: none;
-  cursor: pointer;
-  user-select: none;
-  transition: border-color 180ms ease, background 180ms ease;
-}
-
-.site-nav__menu summary::-webkit-details-marker {
-  display: none;
-}
-
-.site-nav__menu summary span {
-  color: var(--accent);
-  font-size: 10px;
-  transition: transform 200ms ease;
-}
-
-.site-nav__menu[open] summary span {
-  transform: rotate(180deg);
-}
-
-.site-nav__menu summary:hover,
-.site-nav__menu summary:focus-visible {
-  border-color: var(--accent);
-}
-
-.site-nav__panel {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 272px;
-  display: grid;
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface-strong);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 24px 60px -28px var(--shadow);
-  animation: nav-panel-in 220ms ease;
-}
-
-@keyframes nav-panel-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: none; }
-}
-
-.site-nav__panel a {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 18px;
-  white-space: nowrap;
-  padding: 10px 12px;
-  border-radius: 9px;
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 600;
   text-decoration: none;
-  transition: background 160ms ease, color 160ms ease;
+  white-space: nowrap;
+  transition: border-color 180ms ease, color 180ms ease;
 }
 
-.site-nav__panel a:hover,
-.site-nav__panel a:focus-visible {
-  background: color-mix(in srgb, var(--accent), transparent 90%);
+.site-nav__library:hover,
+.site-nav__library:focus-visible {
+  border-color: var(--accent);
   color: var(--accent);
-}
-
-.site-nav__panel a small {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
 }
 
 .site-nav__links a {

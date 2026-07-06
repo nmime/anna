@@ -61,10 +61,8 @@ export const anniversaryEvent = {
       name: 'Январь',
       year: 2026,
       title: 'Новый год — наш',
-      note: 'Год сменился, а главное осталось прежним. Мы вошли в него вдвоем — с долгими зимними вечерами и бесконечными партиями в дурака. Счет до сих пор спорный, и пусть таким и остается.',
-      media: [
-        { src: '/events/anniversary/media/m11-durak.png', caption: 'Наша главная киберспортивная дисциплина', orientation: 'square' }
-      ]
+      note: 'Год сменился, а главное осталось прежним. Мы вошли в него вдвоем — и это был лучший способ начать новый год.',
+      media: []
     },
     {
       num: '02',
@@ -105,7 +103,7 @@ export const anniversaryEvent = {
       note: 'Месяц, когда весна была похожа на тебя: ромашки, солнце сквозь листья и дорога вдвоем.',
       media: [
         { src: '/events/anniversary/media/m05-1.jpg', caption: 'Ромашки тебе — просто так, без повода', orientation: 'portrait' },
-        { src: '/events/anniversary/media/m05-2.jpg', caption: 'Небо, березы и мы', orientation: 'portrait' },
+        { src: '/events/anniversary/media/m05-2.jpg', caption: 'Небо, листва и мы', orientation: 'portrait' },
         { src: '/events/anniversary/media/m05-3.jpg', caption: 'Прячешься от камеры — зря', orientation: 'portrait' },
         { src: '/events/anniversary/media/m05-video.mp4', caption: 'Живая секунда нашего мая', video: true, orientation: 'portrait' }
       ]
@@ -155,7 +153,7 @@ export const anniversaryEvent = {
     label: 'Нажми на конверт, чтобы прочитать письмо во второй год.',
     messageTitle: 'В наш второй год',
     text: 'Первый год мы учились быть вместе. Во втором я хочу большего: больше твоего смеха, больше наших мест, больше историй, которые потом лягут на это кольцо. Спасибо, что выбрала меня триста шестьдесят пять раз подряд.',
-    final: 'Твой — вчера, сегодня и весь следующий год.'
+    final: 'Твой — вчера, сегодня и всегда.'
   },
   message: {
     title: 'С годовщиной, Анна',

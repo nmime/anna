@@ -4,7 +4,8 @@ import '../styles/global.css';
 const {
   title = 'Для тебя, Анна',
   theme = 'library',
-  preloader = { icon: '♡', text: 'Готовлю страницу' }
+  preloader = { icon: '♡', text: 'Готовлю страницу' },
+  lock = null
 } = Astro.props;
 ---
 <!doctype html>
@@ -12,6 +13,16 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {lock && (
+      <script is:inline define:vars={{ lock }}>
+        // Страница закрыта паролем: без отметки от карточки-замка уходим в библиотеку.
+        try {
+          if (localStorage.getItem('memoryGate:' + lock) !== 'open') location.replace('/');
+        } catch (error) {
+          location.replace('/');
+        }
+      </script>
+    )}
     <title>{title}</title>
     <meta name="description" content="Личная библиотека моментов для Анны" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a43f63' d='M12 21c-.4 0-.8-.14-1.1-.42C6.14 16.4 2 12.7 2 8.9 2 5.9 4.4 3.5 7.4 3.5c1.74 0 3.4.86 4.6 2.24 1.2-1.38 2.86-2.24 4.6-2.24 3 0 5.4 2.4 5.4 5.4 0 3.8-4.14 7.5-8.9 11.68-.3.28-.7.42-1.1.42Z'/%3E%3C/svg%3E" />

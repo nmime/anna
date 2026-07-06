@@ -1,5 +1,16 @@
 ---
+import { createHash } from 'node:crypto';
+
 const { library } = Astro.props;
+
+// В HTML уходят только sha256-хэши вариантов пароля, не сами слова.
+const hashPassword = (password) =>
+  (password || '')
+    .split('|')
+    .map((word) => word.trim().toLowerCase())
+    .filter(Boolean)
+    .map((word) => createHash('sha256').update(word).digest('hex'))
+    .join('|');
 ---
 <section id="content" class="library-section">
   <div class="library-section__intro" data-reveal>
@@ -14,7 +25,7 @@ const { library } = Astro.props;
         class:list={['library-card', card.priority && 'library-card--priority']}
         data-id={card.id}
         data-href={card.href}
-        data-password={card.password || ''}
+        data-password={hashPassword(card.password)}
         data-unlock-at={card.unlockAt || ''}
       >
         <img src={card.cardImage} alt="" loading="lazy" />
