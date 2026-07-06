@@ -1,0 +1,26 @@
+---
+const {
+  eyebrow,
+  title,
+  subtitle,
+  lead,
+  image,
+  imageAlt = '',
+  imageClass = '',
+  align = 'center'
+} = Astro.props;
+---
+<section class:list={['page-hero', `page-hero--${align}`]}>
+  <div class="page-hero__media" aria-hidden={image ? 'false' : 'true'}>
+    {image && <img class={imageClass} src={image} alt={imageAlt} loading="eager" />}
+  </div>
+  <div class="page-hero__glow" aria-hidden="true"></div>
+  <slot />
+  <div class="page-hero__content" data-reveal>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {subtitle && <p class="page-hero__subtitle" data-typewriter>{subtitle}</p>}
+    {lead && <p class="page-hero__lead">{lead}</p>}
+  </div>
+  <a class="scroll-cue" href="#content" aria-label="Перейти к содержанию"><span></span></a>
+</section>

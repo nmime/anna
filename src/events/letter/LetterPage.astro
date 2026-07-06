@@ -1,0 +1,84 @@
+---
+import EventShell from '../../components/EventShell.astro';
+import StoryBlocks from '../../components/StoryBlocks.astro';
+import Envelope from '../../components/Envelope.astro';
+import { letterEvent } from '../registry.js';
+---
+<EventShell
+  event={letterEvent}
+  heroAlt="Теплый совместный момент"
+  heroLead={`Сохранено в библиотеке: ${letterEvent.date}`}
+  heroImageClass="page-hero__image--memory"
+>
+  <div slot="hero" class="archive-stamp" aria-hidden="true">
+    <span>Архив</span>
+    <small>{letterEvent.badge}</small>
+  </div>
+  {letterEvent.sections.map((section) => <StoryBlocks section={section} />)}
+  <section id="promise" class="content-section promise-section">
+    <div class="promise-copy" data-reveal>
+      <p class="eyebrow">{letterEvent.promise.eyebrow}</p>
+      <h2>{letterEvent.promise.title}</h2>
+      <p>{letterEvent.promise.text}</p>
+      <strong>{letterEvent.promise.final}</strong>
+    </div>
+  </section>
+  <Envelope envelope={letterEvent.envelope} />
+</EventShell>
+
+<style>
+  .archive-stamp {
+    position: absolute;
+    top: clamp(96px, 14vh, 150px);
+    right: clamp(20px, 7vw, 110px);
+    z-index: 0;
+    display: grid;
+    place-items: center;
+    gap: 2px;
+    width: 128px;
+    height: 128px;
+    border: 2px solid color-mix(in srgb, var(--accent-2), transparent 30%);
+    outline: 1px solid color-mix(in srgb, var(--accent-2), transparent 60%);
+    outline-offset: 5px;
+    border-radius: 50%;
+    color: var(--accent-2);
+    transform: rotate(-12deg);
+    opacity: 0.72;
+    pointer-events: none;
+    mask-image: radial-gradient(circle at 34% 62%, transparent 4%, #000 5%), radial-gradient(circle at 70% 28%, transparent 3%, #000 4%);
+    mask-composite: intersect;
+    animation: stamp-in 700ms cubic-bezier(0.2, 1.6, 0.4, 1) 900ms backwards;
+  }
+
+  .archive-stamp span {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    text-indent: 0.34em;
+  }
+
+  .archive-stamp small {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  @keyframes stamp-in {
+    from { transform: rotate(-12deg) scale(1.7); opacity: 0; }
+    to { transform: rotate(-12deg) scale(1); opacity: 0.72; }
+  }
+
+  @media (max-width: 700px) {
+    .archive-stamp {
+      width: 96px;
+      height: 96px;
+      top: 100px;
+      right: 18px;
+    }
+
+    .archive-stamp span {
+      font-size: 15px;
+    }
+  }
+</style>

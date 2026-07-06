@@ -1,0 +1,11 @@
+---
+const { song, id = 'song' } = Astro.props;
+---
+<section id={id} class="content-section audio-section">
+  <div class="audio-moment" data-reveal>
+    <p class="eyebrow">{song.eyebrow}</p>
+    <h2>{song.title}</h2>
+    <p>{song.text}</p>
+    <audio controls preload="metadata" src={song.src}></audio>
+  </div>
+</section>

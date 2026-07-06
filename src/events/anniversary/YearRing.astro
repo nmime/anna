@@ -1,0 +1,168 @@
+---
+// Кольцо года: 365 тиков — по одному на каждый день с 07.07.2025 по 06.07.2026.
+const { ring } = Astro.props;
+
+const SIZE = 520;
+const C = SIZE / 2;
+const R_IN = 214;
+const R_OUT = 230;
+const R_MONTH = 240;
+const R_LABEL = 194;
+
+// Смещение первого дня каждого месяца от 07.07.2025 (июль → июнь, февраль 2026 = 28 дней).
+const monthStarts = [0, 31, 62, 92, 123, 153, 184, 215, 243, 274, 304, 335];
+const monthDays = [31, 31, 30, 31, 30, 31, 31, 28, 31, 30, 31, 30];
+const monthNames = ['июль', 'авг', 'сен', 'окт', 'ноя', 'дек', 'янв', 'фев', 'мар', 'апр', 'май', 'июн'];
+
+const point = (day, radius) => {
+  const angle = (day / 365) * Math.PI * 2 - Math.PI / 2;
+  return [C + Math.cos(angle) * radius, C + Math.sin(angle) * radius];
+};
+
+const ticks = Array.from({ length: 365 }, (_, i) => {
+  const isMonthStart = monthStarts.includes(i);
+  const isFirstDay = i === 0;
+  const [x1, y1] = point(i, R_IN);
+  const [x2, y2] = point(i, isFirstDay ? R_MONTH + 4 : isMonthStart ? R_MONTH : R_OUT);
+  return { x1, y1, x2, y2, isMonthStart, isFirstDay };
+});
+
+const labels = monthNames.map((name, m) => {
+  const mid = monthStarts[m] + monthDays[m] / 2;
+  const [x, y] = point(mid, R_LABEL);
+  return { name, x, y };
+});
+---
+<div class="year-ring" role="img" aria-label={`Кольцо из 365 дней: ${ring.caption}`}>
+  <svg viewBox={`0 0 ${SIZE} ${SIZE}`} aria-hidden="true">
+    <defs>
+      <linearGradient id="ring-sweep" gradientUnits="userSpaceOnUse" x1="60" y1="80" x2="470" y2="450">
+        <stop offset="0" style="stop-color: var(--accent-2)" />
+        <stop offset="0.55" style="stop-color: var(--accent)" />
+        <stop offset="1" style="stop-color: #c99a4e" />
+      </linearGradient>
+    </defs>
+    <g class="year-ring__ticks">
+      {ticks.map((t) => (
+        <line
+          x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2}
+          stroke={t.isFirstDay ? 'var(--accent-2)' : 'url(#ring-sweep)'}
+          stroke-width={t.isFirstDay ? 3 : t.isMonthStart ? 2 : 1.4}
+          opacity={t.isFirstDay ? 1 : t.isMonthStart ? 0.9 : 0.5}
+          stroke-linecap="round"
+        />
+      ))}
+    </g>
+    <g class="year-ring__labels">
+      {labels.map((l) => (
+        <text x={l.x} y={l.y} text-anchor="middle" dominant-baseline="middle">{l.name}</text>
+      ))}
+    </g>
+  </svg>
+  <div class="year-ring__center">
+    <strong>{ring.center}</strong>
+    <span><b data-count-to="365">365</b> дней вместе</span>
+    <em data-typewriter>{ring.script}</em>
+  </div>
+</div>
+
+<style>
+  .year-ring {
+    position: relative;
+    width: min(480px, 86vw);
+    aspect-ratio: 1;
+    margin-inline: auto;
+  }
+
+  .year-ring svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    animation: ring-breathe 5.5s ease-in-out 2.2s infinite;
+  }
+
+  @keyframes ring-breathe {
+    0%, 100% { filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent), transparent 78%)); }
+    50% { filter: drop-shadow(0 0 26px color-mix(in srgb, var(--accent), transparent 55%)); }
+  }
+
+  @property --ring-sweep {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 360deg;
+  }
+
+  .year-ring__ticks {
+    mask: conic-gradient(from 0deg, #000 var(--ring-sweep), transparent var(--ring-sweep));
+    animation: ring-draw 2s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes ring-draw {
+    from { --ring-sweep: 0deg; }
+    to { --ring-sweep: 360deg; }
+  }
+
+  .year-ring__labels text {
+    font-family: Inter, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    fill: var(--muted);
+    opacity: 0;
+    animation: ring-fade 0.9s ease 1.1s forwards;
+  }
+
+  @keyframes ring-fade {
+    to { opacity: 1; }
+  }
+
+  .year-ring__center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 8px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .year-ring__center strong {
+    color: var(--ink);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 72px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .year-ring__center span {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .year-ring__center span b {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .year-ring__center em {
+    color: var(--accent-2);
+    font-family: Caveat, cursive;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .year-ring__ticks,
+    .year-ring__labels text {
+      animation: none;
+      opacity: 1;
+      mask: none;
+    }
+  }
+</style>

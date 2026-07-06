@@ -1,0 +1,19 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const { timeline, id = 'timeline' } = Astro.props;
+---
+<section id={id} class="content-section">
+  <SectionHeader eyebrow={timeline.eyebrow} title={timeline.title} intro={timeline.intro} />
+  <div class="timeline">
+    {timeline.items.map((item) => (
+      <article class="timeline__item" data-reveal>
+        <time>{item.date}</time>
+        <div>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

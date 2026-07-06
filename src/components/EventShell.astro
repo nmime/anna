@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from './PageHero.astro';
+import SiteNav from './SiteNav.astro';
+import { site } from '../events/shared/site.js';
+
+const {
+  event,
+  heroTitle = 'Анна',
+  heroAlt = 'Анна',
+  heroLead = event.lead,
+  heroImageClass = 'page-hero__image--portrait'
+} = Astro.props;
+---
+<BaseLayout title={event.title} theme={event.theme} preloader={event.preloader}>
+  <SiteNav items={event.nav} />
+  <main id="content" class="event-page" data-event={event.id}>
+    <PageHero
+      eyebrow={event.eyebrow}
+      title={heroTitle}
+      subtitle={event.subtitle}
+      lead={heroLead}
+      image={event.heroImage}
+      imageAlt={heroAlt}
+      align="left"
+      imageClass={heroImageClass}
+    >
+      <slot name="hero" />
+    </PageHero>
+    <slot />
+  </main>
+  <footer class="site-footer">{site.madeFor}</footer>
+</BaseLayout>

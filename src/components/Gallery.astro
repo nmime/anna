@@ -1,0 +1,25 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const {
+  items,
+  id = 'gallery',
+  eyebrow = 'Галерея',
+  title = 'Моменты',
+  intro = 'Фотографии, которые уже стали частью этой библиотеки.'
+} = Astro.props;
+---
+<section id={id} class="content-section gallery-section">
+  <SectionHeader eyebrow={eyebrow} title={title} intro={intro} />
+  <div class="gallery-grid">
+    {items.map((item) => (
+      <button class:list={['gallery-tile', `gallery-tile--${item.orientation}`]} type="button" data-lightbox-src={item.src} data-lightbox-title={item.title}>
+        <img src={item.src} alt={item.title} loading="lazy" />
+        <span>
+          <strong>{item.title}</strong>
+          <small>{item.caption}</small>
+        </span>
+      </button>
+    ))}
+  </div>
+</section>

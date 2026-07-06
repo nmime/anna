@@ -1,0 +1,65 @@
+---
+import EventShell from '../../components/EventShell.astro';
+import FeatureGrid from '../../components/FeatureGrid.astro';
+import Gallery from '../../components/Gallery.astro';
+import MessagePanel from '../../components/MessagePanel.astro';
+import AudioMoment from '../../components/AudioMoment.astro';
+import { birthdayEvent } from '../registry.js';
+
+const confetti = Array.from({ length: 16 }, (_, i) => ({
+  left: (i * 6.4 + 2) % 100,
+  delay: (i * 1.3) % 9,
+  duration: 7.5 + (i % 5) * 1.4,
+  hue: i % 3
+}));
+---
+<EventShell event={birthdayEvent} heroAlt="Анна улыбается">
+  <div slot="hero" class="confetti" aria-hidden="true">
+    {confetti.map((c) => (
+      <i class={`confetti__piece confetti__piece--${c.hue}`} style={`--left: ${c.left}%; --delay: ${c.delay}s; --duration: ${c.duration}s`}></i>
+    ))}
+  </div>
+  <FeatureGrid section={birthdayEvent.qualities} id="qualities" />
+  <Gallery
+    items={birthdayEvent.gallery}
+    eyebrow="Галерея"
+    title="Кадры, где ты сияешь"
+    intro="Не просто фотографии. Маленькие доказательства, что счастье умеет выглядеть очень конкретно."
+  />
+  <FeatureGrid section={birthdayEvent.wishes} id="wishes" compact={true} />
+  <AudioMoment song={birthdayEvent.song} />
+  <MessagePanel message={birthdayEvent.message} />
+</EventShell>
+
+<style>
+  .confetti {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .confetti__piece {
+    position: absolute;
+    top: -4%;
+    left: var(--left);
+    width: 8px;
+    height: 13px;
+    border-radius: 2px;
+    opacity: 0;
+    animation: confetti-fall var(--duration) linear var(--delay) infinite;
+  }
+
+  .confetti__piece--0 { background: color-mix(in srgb, var(--accent), transparent 22%); }
+  .confetti__piece--1 { background: color-mix(in srgb, var(--accent-2), transparent 22%); }
+  .confetti__piece--2 { background: color-mix(in srgb, var(--accent-3), transparent 22%); }
+
+  @keyframes confetti-fall {
+    0% { opacity: 0; transform: translate3d(0, 0, 0) rotateZ(0) rotateX(0); }
+    6% { opacity: 0.85; }
+    50% { transform: translate3d(30px, 54vh, 0) rotateZ(240deg) rotateX(200deg); }
+    94% { opacity: 0.7; }
+    100% { opacity: 0; transform: translate3d(-20px, 106vh, 0) rotateZ(420deg) rotateX(380deg); }
+  }
+</style>

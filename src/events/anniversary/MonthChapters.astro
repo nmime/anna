@@ -1,0 +1,383 @@
+---
+import SectionHeader from '../../components/SectionHeader.astro';
+
+const { intro, months, nextChapter } = Astro.props;
+---
+<section id="chapters" class="content-section">
+  <SectionHeader eyebrow={intro.eyebrow} title={intro.title} intro={intro.intro} />
+  <div class="chapters">
+    {months.map((m) => (
+      <article class="chapter" data-chapter>
+        <div class="chapter__marker" aria-hidden="true">
+          <span>{m.num}</span>
+        </div>
+        <div class="chapter__card">
+          {m.media.length > 0 ? (
+            <div
+              class="chapter__media"
+              style={`--cols: ${Math.min(Math.max(m.media.filter((x) => !x.video && x.orientation === 'portrait').length, 1), 3)}`}
+            >
+              {m.media.map((item) =>
+                item.video ? (
+                  <figure class:list={['chapter__clip', `chapter__clip--${item.orientation || 'landscape'}`]}>
+                    <video src={item.src} autoplay muted loop playsinline preload="metadata" aria-label={item.caption}></video>
+                    <figcaption>{item.caption}</figcaption>
+                  </figure>
+                ) : (
+                  <figure class:list={['chapter__shot', `chapter__shot--${item.orientation || 'portrait'}`]}>
+                    <button type="button" data-lightbox-src={item.src} data-lightbox-title={item.caption} aria-label={`Открыть фото: ${item.caption}`}>
+                      <img src={item.src} alt={item.caption} loading="lazy" />
+                    </button>
+                    <figcaption>{item.caption}</figcaption>
+                  </figure>
+                )
+              )}
+            </div>
+          ) : (
+            <div class="chapter__slot">
+              <em>здесь будет наше фото</em>
+              <span>{m.name.toLowerCase()} {m.year}</span>
+            </div>
+          )}
+          <div class="chapter__copy">
+            <p class="chapter__meta">{m.name} · {m.year}</p>
+            <h3>{m.title}</h3>
+            <p class="chapter__note">{m.note}</p>
+          </div>
+        </div>
+      </article>
+    ))}
+    <article class="chapter chapter--open" data-chapter>
+      <div class="chapter__marker chapter__marker--open" aria-hidden="true">
+        <span>{nextChapter.numeral}</span>
+      </div>
+      <div class="chapter__card chapter__card--open">
+        <h3>{nextChapter.title}</h3>
+        <p>{nextChapter.text}</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .chapters {
+    position: relative;
+    width: min(920px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(26px, 4vw, 44px);
+    padding-left: clamp(46px, 6vw, 64px);
+  }
+
+  .chapters::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: clamp(17px, calc(6vw - 29px + 17px), 35px);
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--line) 6%, var(--line) 94%, transparent);
+  }
+
+  .chapter {
+    position: relative;
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .chapter.in-view {
+    opacity: 1;
+    transform: none;
+  }
+
+  .chapter__marker {
+    position: absolute;
+    top: 22px;
+    left: calc(-1 * clamp(46px, 6vw, 64px));
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface-strong);
+    box-shadow: 0 10px 26px -16px var(--shadow);
+  }
+
+  .chapter__marker span {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .chapter__marker--open span {
+    color: var(--accent-2);
+    font-size: 10px;
+  }
+
+  .chapter__card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(18px, 3vw, 30px);
+    padding: clamp(18px, 2.6vw, 26px);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 24px 60px -38px var(--shadow);
+  }
+
+  .chapter:nth-child(even) .chapter__card {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+
+  .chapter:nth-child(even) .chapter__card > :first-child {
+    order: 2;
+  }
+
+  @media (min-width: 761px) {
+    .chapter__card:has(.chapter__media[style*='--cols: 3']) {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+      align-items: center;
+    }
+
+    .chapter:nth-child(even) .chapter__card:has(.chapter__media[style*='--cols: 3']) {
+      grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
+    }
+  }
+
+  .chapter__media[style*='--cols: 3'] figcaption {
+    font-size: 14px;
+  }
+
+  .chapter__media {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+    gap: 14px;
+    align-content: start;
+    align-items: start;
+  }
+
+  .chapter__shot,
+  .chapter__clip {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .chapter__shot--landscape {
+    grid-column: 1 / -1;
+  }
+
+  .chapter__shot--square {
+    grid-column: 1 / -1;
+    width: min(100%, 300px);
+    justify-self: center;
+  }
+
+  .chapter__media[style*='--cols: 1'] .chapter__shot--portrait {
+    width: min(100%, 320px);
+    justify-self: center;
+  }
+
+  .chapter__shot button {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: zoom-in;
+    box-shadow: 0 14px 34px -22px var(--shadow);
+  }
+
+  .chapter__shot img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    filter: saturate(0.94);
+    transition: transform 400ms ease;
+  }
+
+  .chapter__shot--portrait img {
+    aspect-ratio: 3 / 4;
+  }
+
+  .chapter__shot--landscape img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .chapter__shot--square img {
+    aspect-ratio: 1;
+  }
+
+  .chapter__shot button:hover img,
+  .chapter__shot button:focus-visible img {
+    transform: scale(1.035);
+  }
+
+  .chapter__clip {
+    grid-column: 1 / -1;
+  }
+
+  .chapter__clip--portrait {
+    width: min(100%, 300px);
+    justify-self: center;
+  }
+
+  .chapter__clip video {
+    width: 100%;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--ink), #000000 40%);
+    display: block;
+    box-shadow: 0 14px 34px -22px var(--shadow);
+  }
+
+  .chapter__clip--portrait video {
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+  }
+
+  .chapter__clip--landscape video {
+    max-height: 440px;
+    object-fit: contain;
+  }
+
+  .chapter__shot figcaption,
+  .chapter__clip figcaption {
+    margin-top: 6px;
+    color: var(--accent-2);
+    font-family: Caveat, cursive;
+    font-size: clamp(16px, 1.8vw, 19px);
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .chapter__slot {
+    position: relative;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 6px;
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px dashed color-mix(in srgb, var(--accent), transparent 55%);
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 92%), color-mix(in srgb, var(--accent-2), transparent 93%));
+  }
+
+  .chapter:nth-child(even) .chapter__slot {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent-2), transparent 93%), color-mix(in srgb, var(--accent-3), transparent 93%));
+  }
+
+  .chapter__slot em {
+    color: var(--accent-2);
+    font-family: Caveat, cursive;
+    font-style: normal;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1;
+  }
+
+  .chapter__slot span {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .chapter__copy {
+    min-width: 0;
+    align-self: center;
+  }
+
+  .chapter__meta {
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .chapter__copy h3 {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 32px);
+    line-height: 1.12;
+  }
+
+  .chapter__note {
+    margin: 12px 0 0;
+    color: var(--soft);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .chapter__card--open {
+    display: block;
+    padding: clamp(24px, 3vw, 34px);
+    border-style: dashed;
+    border-color: color-mix(in srgb, var(--accent-2), transparent 45%);
+    background: color-mix(in srgb, var(--surface), transparent 30%);
+    text-align: left;
+  }
+
+  .chapter__card--open h3 {
+    margin: 0;
+    color: var(--accent-2);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 2.6vw, 28px);
+  }
+
+  .chapter__card--open p {
+    margin: 10px 0 0;
+    color: var(--soft);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 760px) {
+    .chapter__card,
+    .chapter:nth-child(even) .chapter__card {
+      grid-template-columns: 1fr;
+    }
+
+    .chapter:nth-child(even) .chapter__card > :first-child {
+      order: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chapter {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const clips = document.querySelectorAll('.chapter__clip video');
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!still && clips.length) {
+    const watcher = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.3 });
+    clips.forEach((video) => watcher.observe(video));
+  }
+</script>

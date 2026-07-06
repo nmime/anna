@@ -1,0 +1,16 @@
+---
+const { envelope } = Astro.props;
+---
+<section id="envelope" class="content-section envelope-section">
+  <header class="section-header" data-reveal>
+    <p class="eyebrow">{envelope.eyebrow}</p>
+    <h2>{envelope.title}</h2>
+    <p>{envelope.date}</p>
+  </header>
+  <letter-envelope
+    label={envelope.label}
+    title={envelope.messageTitle}
+    text={envelope.text}
+    final={envelope.final}
+  ></letter-envelope>
+</section>

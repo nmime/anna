@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteNav from '../../components/SiteNav.astro';
+import FeatureGrid from '../../components/FeatureGrid.astro';
+import Gallery from '../../components/Gallery.astro';
+import MessagePanel from '../../components/MessagePanel.astro';
+import Envelope from '../../components/Envelope.astro';
+import YearRing from './YearRing.astro';
+import MonthChapters from './MonthChapters.astro';
+import { anniversaryEvent, site } from '../registry.js';
+---
+<BaseLayout title={anniversaryEvent.title} theme={anniversaryEvent.theme} preloader={anniversaryEvent.preloader}>
+  <SiteNav items={anniversaryEvent.nav} />
+  <main id="content" class="event-page" data-event={anniversaryEvent.id}>
+    <section class="anni-hero">
+      <div class="anni-hero__glow" aria-hidden="true"></div>
+      <div class="anni-hero__inner">
+        <div class="anni-hero__copy" data-reveal>
+          <p class="eyebrow">{anniversaryEvent.eyebrow}</p>
+          <h1>{anniversaryEvent.title}</h1>
+          <p class="anni-verdict">
+            <s>{anniversaryEvent.verdict.strike}</s>
+            <em>{anniversaryEvent.verdict.truth}</em>
+          </p>
+          <p class="anni-hero__lead">{anniversaryEvent.lead}</p>
+        </div>
+        <YearRing ring={anniversaryEvent.ring} />
+      </div>
+      <a class="scroll-cue" href="#chapters" aria-label="Перейти к главам"><span></span></a>
+    </section>
+
+    <MonthChapters
+      intro={anniversaryEvent.chaptersIntro}
+      months={anniversaryEvent.months}
+      nextChapter={anniversaryEvent.nextChapter}
+    />
+    <FeatureGrid section={anniversaryEvent.insights} id="insights" compact={true} />
+    <Gallery
+      items={anniversaryEvent.gallery}
+      eyebrow="Галерея"
+      title="Кадры нашего года"
+      intro="Часть уже здесь. Остальные добавим вместе — год ведь только первый."
+    />
+    <Envelope envelope={anniversaryEvent.envelope} />
+    <MessagePanel message={anniversaryEvent.message} />
+  </main>
+  <footer class="site-footer">{site.madeFor}</footer>
+</BaseLayout>
+
+<style>
+  .anni-hero {
+    position: relative;
+    min-height: 92svh;
+    display: grid;
+    align-items: center;
+    padding: 110px clamp(20px, 6vw, 84px) 70px;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .anni-hero__glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(46% 52% at 74% 44%, color-mix(in srgb, var(--accent), transparent 84%), transparent 70%),
+      radial-gradient(38% 44% at 22% 76%, color-mix(in srgb, var(--accent-2), transparent 88%), transparent 72%),
+      radial-gradient(30% 34% at 60% 12%, color-mix(in srgb, var(--accent-3), transparent 91%), transparent 74%);
+  }
+
+  .anni-hero__inner {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(30px, 5vw, 64px);
+  }
+
+  .anni-hero__copy {
+    min-width: 0;
+  }
+
+  .anni-hero h1 {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(46px, 7.4vw, 92px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+
+  .anni-verdict {
+    width: min(560px, 100%);
+    margin: 24px 0 0;
+    line-height: 1.3;
+  }
+
+  .anni-verdict s {
+    position: relative;
+    color: var(--muted);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(21px, 2.8vw, 32px);
+    text-decoration: none;
+  }
+
+  .anni-verdict s::after {
+    content: '';
+    position: absolute;
+    left: -2%;
+    top: 55%;
+    width: 0;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--accent-2);
+    transform: rotate(-2.2deg);
+    animation: verdict-strike 0.55s cubic-bezier(0.7, 0, 0.3, 1) 1.2s forwards;
+  }
+
+  .anni-verdict em {
+    display: block;
+    margin-top: 6px;
+    color: var(--accent-2);
+    font-family: Caveat, cursive;
+    font-style: normal;
+    font-size: clamp(30px, 3.6vw, 44px);
+    line-height: 1.1;
+    opacity: 0;
+    transform: translateY(10px) rotate(-1.2deg);
+    animation: verdict-truth 0.7s ease 1.95s forwards;
+  }
+
+  @keyframes verdict-strike {
+    to { width: 104%; }
+  }
+
+  @keyframes verdict-truth {
+    to { opacity: 1; transform: translateY(0) rotate(-1.2deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anni-verdict s::after {
+      width: 104%;
+      animation: none;
+    }
+
+    .anni-verdict em {
+      opacity: 1;
+      transform: rotate(-1.2deg);
+      animation: none;
+    }
+  }
+
+  .anni-hero__lead {
+    width: min(500px, 100%);
+    margin: 20px 0 0;
+    color: var(--soft);
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 980px) {
+    .anni-hero {
+      padding-top: 120px;
+    }
+
+    .anni-hero__inner {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      gap: 44px;
+    }
+
+    .anni-hero__subtitle,
+    .anni-hero__lead {
+      margin-inline: auto;
+    }
+  }
+</style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const chapters = document.querySelectorAll('[data-chapter]');
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    chapters.forEach((chapter) => chapter.classList.add('in-view'));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -8% 0px' }
+    );
+    chapters.forEach((chapter) => observer.observe(chapter));
+  }
+</script>

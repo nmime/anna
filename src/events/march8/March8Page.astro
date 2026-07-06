@@ -1,0 +1,62 @@
+---
+import EventShell from '../../components/EventShell.astro';
+import FeatureGrid from '../../components/FeatureGrid.astro';
+import Timeline from '../../components/Timeline.astro';
+import Gallery from '../../components/Gallery.astro';
+import MessagePanel from '../../components/MessagePanel.astro';
+import { march8Event } from '../registry.js';
+
+const petals = Array.from({ length: 12 }, (_, i) => ({
+  left: (i * 8.3 + 4) % 100,
+  delay: (i * 1.7) % 11,
+  duration: 9 + (i % 5) * 1.6,
+  scale: 0.7 + (i % 4) * 0.16
+}));
+---
+<EventShell event={march8Event}>
+  <div slot="hero" class="petals" aria-hidden="true">
+    {petals.map((p) => (
+      <i style={`--left: ${p.left}%; --delay: ${p.delay}s; --duration: ${p.duration}s; --scale: ${p.scale}`}></i>
+    ))}
+  </div>
+  <FeatureGrid section={march8Event.qualities} id="qualities" />
+  <Timeline timeline={march8Event.timeline} />
+  <Gallery
+    items={march8Event.gallery}
+    eyebrow="Наши моменты"
+    title="Галерея любви"
+    intro="Кадры, в которых уже есть своя тишина, тепло и память."
+  />
+  <MessagePanel message={march8Event.message} />
+</EventShell>
+
+<style>
+  .petals {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .petals i {
+    position: absolute;
+    top: -6%;
+    left: var(--left);
+    width: 14px;
+    height: 18px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent), #ffffff 42%), color-mix(in srgb, var(--accent), transparent 30%));
+    border-radius: 68% 8% 68% 8%;
+    opacity: 0;
+    transform: scale(var(--scale));
+    animation: petal-fall var(--duration) linear var(--delay) infinite;
+  }
+
+  @keyframes petal-fall {
+    0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg) scale(var(--scale)); }
+    8% { opacity: 0.75; }
+    50% { transform: translate3d(-38px, 54vh, 0) rotate(200deg) scale(var(--scale)); }
+    92% { opacity: 0.6; }
+    100% { opacity: 0; transform: translate3d(24px, 106vh, 0) rotate(390deg) scale(var(--scale)); }
+  }
+</style>

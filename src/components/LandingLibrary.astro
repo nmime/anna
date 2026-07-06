@@ -1,0 +1,46 @@
+---
+const { library } = Astro.props;
+---
+<section id="content" class="library-section">
+  <div class="library-section__intro" data-reveal>
+    <p class="eyebrow">Выбери главу</p>
+    <h2>Библиотека моментов</h2>
+    <p>{library.quote}</p>
+  </div>
+
+  <div class="library-grid">
+    {library.cards.map((card) => (
+      <memory-gate
+        class:list={['library-card', card.priority && 'library-card--priority']}
+        data-id={card.id}
+        data-href={card.href}
+        data-password={card.password || ''}
+        data-unlock-at={card.unlockAt || ''}
+      >
+        <img src={card.cardImage} alt="" loading="lazy" />
+        <div class="library-card__shade"></div>
+        <div class="library-card__content">
+          <div class="library-card__top">
+            <span>{card.badge}</span>
+            {card.icon && <strong>{card.icon}</strong>}
+          </div>
+          {card.date && <time class="library-card__date">{card.date}</time>}
+          <h3>{card.cardTitle}</h3>
+          <p>{card.cardDesc}</p>
+          <div class="library-card__status" data-gate-status>{card.status}</div>
+          {card.password && (
+            <form class="library-card__form" data-gate-form>
+              <label>
+                <span>{card.hint}</span>
+                <input type="text" autocomplete="off" placeholder="тихо напиши ответ" data-gate-input />
+              </label>
+              <button type="submit">Открыть</button>
+              <small data-gate-error></small>
+            </form>
+          )}
+          {!card.password && <a class="library-card__link" href={card.href}>Открыть</a>}
+        </div>
+      </memory-gate>
+    ))}
+  </div>
+</section>

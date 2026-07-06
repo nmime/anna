@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+
+const {
+  title = 'Для тебя, Анна',
+  theme = 'library',
+  preloader = { icon: '♡', text: 'Готовлю страницу' }
+} = Astro.props;
+---
+<!doctype html>
+<html lang="ru" data-theme={theme}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content="Личная библиотека моментов для Анны" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23a43f63' d='M12 21c-.4 0-.8-.14-1.1-.42C6.14 16.4 2 12.7 2 8.9 2 5.9 4.4 3.5 7.4 3.5c1.74 0 3.4.86 4.6 2.24 1.2-1.38 2.86-2.24 4.6-2.24 3 0 5.4 2.4 5.4 5.4 0 3.8-4.14 7.5-8.9 11.68-.3.28-.7.42-1.1.42Z'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <site-preloader class="is-hidden" icon={preloader.icon} text={preloader.text}></site-preloader>
+    <slot />
+    <script>
+      import '../lib/library-ui.js';
+    </script>
+  </body>
+</html>

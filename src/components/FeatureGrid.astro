@@ -1,0 +1,17 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const { section, id = 'features', compact = false } = Astro.props;
+---
+<section id={id} class:list={['content-section', compact && 'content-section--compact']}>
+  <SectionHeader eyebrow={section.eyebrow} title={section.title} intro={section.intro} />
+  <div class="feature-grid">
+    {section.items.map((item) => (
+      <article class:list={['feature-card', !item.icon && 'feature-card--plain']} data-reveal>
+        {item.icon && <span>{item.icon}</span>}
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+      </article>
+    ))}
+  </div>
+</section>

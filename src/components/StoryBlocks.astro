@@ -1,0 +1,19 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+const { section, id = section.id } = Astro.props;
+---
+<section id={id} class="content-section">
+  <SectionHeader eyebrow={section.eyebrow} title={section.title} intro={section.intro} />
+  <div class="story-stack">
+    {section.cards.map((card) => (
+      <article class:list={['story-block', !card.icon && 'story-block--plain']} data-reveal>
+        {card.icon && <span>{card.icon}</span>}
+        <div>
+          <h3>{card.title}</h3>
+          <p>{card.text}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
