@@ -1,6 +1,8 @@
 ---
+import { existsSync } from 'node:fs';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteNav from '../../components/SiteNav.astro';
+import AudioMoment from '../../components/AudioMoment.astro';
 import FeatureGrid from '../../components/FeatureGrid.astro';
 import Gallery from '../../components/Gallery.astro';
 import MessagePanel from '../../components/MessagePanel.astro';
@@ -8,6 +10,9 @@ import YearRing from './YearRing.astro';
 import LoveLetter from './LoveLetter.astro';
 import MonthChapters from './MonthChapters.astro';
 import { anniversaryEvent, site } from '../registry.js';
+
+// Плеер рендерится только когда файл песни реально лежит в public/.
+const songReady = existsSync(`${process.cwd()}/public${anniversaryEvent.song.src}`);
 ---
 <BaseLayout
   title={anniversaryEvent.title}
@@ -46,6 +51,7 @@ import { anniversaryEvent, site } from '../registry.js';
       title="Кадры нашего года"
       intro="Часть уже здесь. Остальные добавим вместе — год ведь только первый."
     />
+    {songReady && <AudioMoment song={anniversaryEvent.song} />}
     <LoveLetter envelope={anniversaryEvent.envelope} />
     <MessagePanel message={anniversaryEvent.message} />
   </main>

@@ -138,6 +138,13 @@ export const anniversaryEvent = {
     ]
   },
   gallery: sharedGallery,
+  // Песня появится на странице автоматически, как только файл ляжет по пути src.
+  song: {
+    eyebrow: 'Саундтрек года',
+    title: 'Наша песня',
+    text: 'Включи и дочитай эту страницу под нее. Так правильнее.',
+    src: '/events/anniversary/audio/our_song.mp3'
+  },
   envelope: {
     eyebrow: 'Письмо',
     title: 'Письмо в наш второй год',
