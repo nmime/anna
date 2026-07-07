@@ -1,0 +1,313 @@
+---
+import SectionHeader from '../../components/SectionHeader.astro';
+
+const { envelope } = Astro.props;
+---
+<section id="envelope" class="content-section love-letter-section">
+  <SectionHeader eyebrow={envelope.eyebrow} title={envelope.title} intro={envelope.date} />
+  <div class="love-letter" data-love-letter>
+    <div class="love-letter__scene">
+      <div class="love-letter__env">
+        <div class="love-letter__back"></div>
+        <div class="love-letter__paper">
+          <div class="love-letter__text">
+            <p class="love-letter__eyebrow">{envelope.messageTitle}</p>
+            <p class="love-letter__body">{envelope.text}</p>
+            <p class="love-letter__final">{envelope.final}</p>
+            <p class="love-letter__sign">Н.</p>
+          </div>
+        </div>
+        <div class="love-letter__front" aria-hidden="true"></div>
+        <div class="love-letter__flap" aria-hidden="true"></div>
+        <button class="love-letter__seal" type="button" aria-label="Открыть письмо">
+          <span>7.07</span>
+        </button>
+        <div class="love-letter__burst" aria-hidden="true">
+          {Array.from({ length: 8 }, (_, i) => (
+            <i style={`--a: ${i * 45}deg; --d: ${i % 2 ? 110 : 82}px`}></i>
+          ))}
+        </div>
+      </div>
+    </div>
+    <p class="love-letter__hint">{envelope.label}</p>
+  </div>
+</section>
+
+<style>
+  .love-letter-section {
+    overflow: visible;
+  }
+
+  .love-letter {
+    width: min(680px, 100%);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .love-letter__scene {
+    perspective: 1400px;
+    padding: 30px 0 10px;
+  }
+
+  .love-letter__env {
+    --paper: #fdf6ec;
+    --paper-edge: #efdfc8;
+    position: relative;
+    width: min(420px, 88vw);
+    aspect-ratio: 10 / 6.4;
+    margin: 0 auto;
+    transform-style: preserve-3d;
+    animation: love-float 5.5s ease-in-out infinite;
+    transition: transform 300ms ease;
+  }
+
+  @keyframes love-float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -9px; }
+  }
+
+  .love-letter__back,
+  .love-letter__front,
+  .love-letter__flap {
+    position: absolute;
+    border-radius: 10px;
+  }
+
+  .love-letter__back {
+    inset: 0;
+    background: linear-gradient(160deg, var(--paper), var(--paper-edge));
+    box-shadow: 0 34px 70px -34px var(--shadow);
+    z-index: 1;
+  }
+
+  .love-letter__paper {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    top: 5%;
+    bottom: 8%;
+    z-index: 2;
+    border-radius: 8px;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 27px, color-mix(in srgb, var(--accent-2), transparent 88%) 27px 28px),
+      #fffdf8;
+    border: 1px solid var(--line);
+    box-shadow: 0 16px 40px -26px var(--shadow);
+    overflow: hidden;
+    transition: top 700ms cubic-bezier(0.22, 1.2, 0.36, 1) 550ms,
+      bottom 700ms cubic-bezier(0.22, 1.2, 0.36, 1) 550ms,
+      left 700ms ease 550ms, right 700ms ease 550ms,
+      box-shadow 700ms ease 550ms,
+      z-index 0s 880ms;
+  }
+
+  .love-letter__text {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    gap: 12px;
+    padding: clamp(16px, 4vw, 30px);
+    opacity: 0;
+    transition: opacity 600ms ease 1100ms;
+  }
+
+  .love-letter__eyebrow {
+    margin: 0;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .love-letter__body {
+    margin: 0;
+    color: var(--soft);
+    font-size: clamp(13.5px, 1.7vw, 16px);
+    line-height: 1.62;
+  }
+
+  .love-letter__final {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 1.9vw, 18px);
+  }
+
+  .love-letter__sign {
+    margin: 0;
+    color: var(--accent-2);
+    font-family: Caveat, cursive;
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1;
+  }
+
+  .love-letter__front {
+    inset: 0;
+    z-index: 3;
+    background:
+      linear-gradient(24deg, var(--paper-edge) 0%, transparent 52%),
+      linear-gradient(-24deg, var(--paper-edge) 0%, transparent 52%),
+      linear-gradient(0deg, var(--paper) 44%, transparent 60%);
+    clip-path: polygon(0 0, 50% 44%, 100% 0, 100% 100%, 0 100%);
+    box-shadow: inset 0 -2px 0 rgba(120, 80, 40, 0.08);
+  }
+
+  .love-letter__flap {
+    inset: 0 0 auto 0;
+    height: 52%;
+    z-index: 4;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--paper), var(--accent) 6%), var(--paper-edge));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transition: transform 650ms cubic-bezier(0.6, 0, 0.3, 1), z-index 0s 320ms;
+  }
+
+  .love-letter__seal {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    z-index: 5;
+    width: 74px;
+    height: 74px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 32% 30%, color-mix(in srgb, var(--accent-2), #ffffff 26%), var(--accent-2) 58%, color-mix(in srgb, var(--accent-2), #000000 22%));
+    box-shadow: 0 10px 26px -10px color-mix(in srgb, var(--accent-2), transparent 30%), inset 0 0 0 5px color-mix(in srgb, #ffffff, transparent 82%);
+    color: #fff7ef;
+    cursor: pointer;
+    translate: -50% -50%;
+    transition: transform 480ms cubic-bezier(0.5, -0.6, 0.4, 1), opacity 420ms ease;
+    animation: seal-pulse 2.6s ease-in-out infinite;
+  }
+
+  .love-letter__seal span {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  @keyframes seal-pulse {
+    0%, 100% { box-shadow: 0 10px 26px -10px color-mix(in srgb, var(--accent-2), transparent 30%), inset 0 0 0 5px color-mix(in srgb, #ffffff, transparent 82%), 0 0 0 0 color-mix(in srgb, var(--accent-2), transparent 62%); }
+    50% { box-shadow: 0 10px 26px -10px color-mix(in srgb, var(--accent-2), transparent 30%), inset 0 0 0 5px color-mix(in srgb, #ffffff, transparent 82%), 0 0 0 16px transparent; }
+  }
+
+  .love-letter__burst {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  .love-letter__burst i {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    background: var(--accent-2);
+    clip-path: path('M6 11 C 1 7, 0 4, 2 2 C 3.4 0.8, 5.2 1.2, 6 2.6 C 6.8 1.2, 8.6 0.8, 10 2 C 12 4, 11 7, 6 11 Z');
+  }
+
+  /* ---------- открытое состояние ---------- */
+
+  .love-letter.is-open .love-letter__env {
+    animation: none;
+  }
+
+  .love-letter.is-open .love-letter__seal {
+    transform: scale(0.2) rotate(-40deg);
+    opacity: 0;
+    pointer-events: none;
+    animation: none;
+  }
+
+  .love-letter.is-open .love-letter__flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+  }
+
+  .love-letter.is-open .love-letter__paper {
+    top: -34%;
+    bottom: -12%;
+    left: -4%;
+    right: -4%;
+    z-index: 5;
+    box-shadow: 0 42px 80px -30px var(--shadow);
+  }
+
+  .love-letter.is-open .love-letter__text {
+    opacity: 1;
+  }
+
+  .love-letter.is-open .love-letter__burst i {
+    animation: heart-burst 900ms ease-out 480ms forwards;
+  }
+
+  @keyframes heart-burst {
+    0% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(0.4); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(var(--a)) translateY(calc(-1 * var(--d))) scale(1); }
+  }
+
+  .love-letter__hint {
+    margin: 92px auto 0;
+    color: var(--muted);
+    font-size: 13px;
+    transition: opacity 400ms ease;
+  }
+
+  .love-letter.is-open .love-letter__hint {
+    opacity: 0;
+  }
+
+  @media (max-width: 640px) {
+    .love-letter.is-open .love-letter__paper {
+      top: -26%;
+      bottom: -10%;
+    }
+
+    .love-letter__hint {
+      margin-top: 70px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .love-letter__env,
+    .love-letter__seal {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector('[data-love-letter]');
+
+  if (root) {
+    const env = root.querySelector('.love-letter__env');
+    const seal = root.querySelector('.love-letter__seal');
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    seal.addEventListener('click', () => root.classList.add('is-open'));
+
+    if (fine && !calm) {
+      env.addEventListener('pointermove', (event) => {
+        if (root.classList.contains('is-open')) return;
+        const rect = env.getBoundingClientRect();
+        const dx = (event.clientX - rect.left) / rect.width - 0.5;
+        const dy = (event.clientY - rect.top) / rect.height - 0.5;
+        env.style.transform = `rotateY(${dx * 10}deg) rotateX(${dy * -8}deg)`;
+      });
+      env.addEventListener('pointerleave', () => {
+        env.style.transform = '';
+      });
+    }
+  }
+</script>

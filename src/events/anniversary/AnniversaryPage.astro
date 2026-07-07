@@ -4,8 +4,8 @@ import SiteNav from '../../components/SiteNav.astro';
 import FeatureGrid from '../../components/FeatureGrid.astro';
 import Gallery from '../../components/Gallery.astro';
 import MessagePanel from '../../components/MessagePanel.astro';
-import Envelope from '../../components/Envelope.astro';
 import YearRing from './YearRing.astro';
+import LoveLetter from './LoveLetter.astro';
 import MonthChapters from './MonthChapters.astro';
 import { anniversaryEvent, site } from '../registry.js';
 ---
@@ -46,7 +46,7 @@ import { anniversaryEvent, site } from '../registry.js';
       title="Кадры нашего года"
       intro="Часть уже здесь. Остальные добавим вместе — год ведь только первый."
     />
-    <Envelope envelope={anniversaryEvent.envelope} />
+    <LoveLetter envelope={anniversaryEvent.envelope} />
     <MessagePanel message={anniversaryEvent.message} />
   </main>
   <footer class="site-footer">{site.madeFor}</footer>
