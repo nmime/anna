@@ -572,6 +572,7 @@ html[data-theme="library"] .page-hero h1 {
   flex-direction: column;
   justify-content: flex-end;
   padding: clamp(22px, 3vw, 34px);
+  padding-top: 72px;
   color: #ffffff;
 }
 

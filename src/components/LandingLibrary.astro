@@ -35,7 +35,6 @@ const hashPassword = (password) =>
             <span>{card.badge}</span>
             {card.icon && <strong>{card.icon}</strong>}
           </div>
-          {card.date && <time class="library-card__date">{card.date}</time>}
           <h3>{card.cardTitle}</h3>
           <p>{card.cardDesc}</p>
           <div class="library-card__status" data-gate-status>{card.status}</div>
